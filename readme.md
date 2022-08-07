@@ -404,3 +404,136 @@ select book_id as "id" from book;
 +----+
 5 rows in set (0.030 sec)
 ``` 
+
+# D. JOINS IN SQL
+used to join/cmbine rows from two or more tables, views or materialized views.
+creates a new table after retrieving data from mutiple tables.
+join is same as inner join
+
+Consider Department and Employee table.
+
+Department
+```  
++---------+------+
+| dept_id | name |
++---------+------+
+|       2 | IOST |
+|       6 | IOM  |
+|      16 | BBS  |
+|      19 | BBAS |
+|      21 | JEE  |
++---------+------+
+``` 
+
+Employee
+``` 
++-----+--------+-------------------+--------+-------------+------+---------+
+| eid | name   | post              | salary | working_hrs | age  | dept_id |
++-----+--------+-------------------+--------+-------------+------+---------+
+|   1 | Ram    | Hacker            | 500000 |           0 |   21 |       2 |
+|   2 | Anjan  | Businessman       | 500000 |           0 | NULL |       6 |
+|   5 | Bishal | Businessman       | 400000 |           4 | NULL |      16 |
+|  12 | Sam    | Software Engineer | 700000 |          12 |   22 |      26 |
++-----+--------+-------------------+--------+-------------+------+---------+
+``` 
+### a. INNER JOIN
+returns all rows from both participating tables where key of one table = key of another table
+
+
+Query for returning employee name and department name
+``` 
+select e.name, d.name
+from employee e
+inner join department d on e.dept_id=d.dept_id;
+``` 
+Output:
+``` 
++--------+------+
+| name   | name |
++--------+------+
+| Ram    | IOST |
+| Anjan  | IOM  |
+| Bishal | BBS  |
++--------+------+
+``` 
+
+<br/>
+
+### b. OUTER JOIN
+***
+
+   also allows non-matched rows from the table.
+
+<br/>
+
+#### i. LEFT JOIN / LEFT OUTER JOIN  
+
+Query for returning all the employee name and department name
+  ``` 
+    select e.name, d.name
+    from employee e
+    left join department d on e.dept_id=d.dept_id;
+  ``` 
+
+  Keypoint = innerjoin + any additional records missed from left table
+
+Output:
+
+```         
++--------+------+
+| name   | name |
++--------+------+
+| Ram    | IOST |
+| Anjan  | IOM  |
+| Bishal | BBS  |
+| Sam    | NULL |
++--------+------+
+``` 
+<br/>
+
+#### ii. RIGHT JOIN / RIGHT OUTER JOIN 
+
+Query for returning all the employee name and department name
+  ``` 
+    select e.name, d.name
+    from employee e
+    right join department d on e.dept_id=d.dept_id;
+  ``` 
+
+  Keypoint = innerjoin + any additional records missed from right table
+
+Output
+``` 
++--------+------+
+| name   | name |
++--------+------+
+| Ram    | IOST |
+| Anjan  | IOM  |
+| Bishal | BBS  |
+| NULL   | BBAS |
+| NULL   | JEE  |
++--------+------+
+``` 
+
+#### iii. FULL JOIN / FULL OUTER JOIN 
+``` 
+select e.name, d.name from employee e left join department d on e.dept_id=d.dept_id union
+select e.name, d.name from employee e right join department d on e.dept_id=d.dept_id;
+``` 
+
+```     
++--------+------+
+| name   | name |
++--------+------+
+| Ram    | IOST |
+| Anjan  | IOM  |
+| Bishal | BBS  |
+| Sam    | NULL |
+| NULL   | BBAS |
+| NULL   | JEE  |
++--------+------+
+``` 
+
+### c. NATURAL JOIN
+   there should be exact one column same between 2 relations with same data_type.
+   The values have to be also matching.
