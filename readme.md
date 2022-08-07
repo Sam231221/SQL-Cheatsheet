@@ -209,7 +209,7 @@ delete from employee where name= "Rohan";
 
 <br/>
 
-# C. Constraints in SQL
+# C. Constraints and Relationships in SQL
 Syntax:
 ``` 
 create table table_name(
@@ -221,6 +221,9 @@ create table table_name(
     constraint constraint_name3 constraint_type(column2),
 );
 ``` 
+Note:
+You must create records before you set the primary key of participating table.
+
 
 Examples:
 For Book table
@@ -249,15 +252,15 @@ create table customer(
     -> constraint bid foreign key (bid) references book(book_id));
 ```     
 
-Cmd1
+Cmd1: First creating records for book table.
 ```  
 insert into book values (12, 'Artifical Intelligence', 'Sam', 30000),(23, 'Database Management System','Ram', 15000),(24, 'Theory of Computation', 'Sam', 2000);
 ```  
-Cmd2
+Cmd2: Then, associating 'id' attribute of records of book to the 'book_id' attribute of customer table.
 ```  
 insert into customer values(1,'Shyam', 'shyam111@gmail.com', '2022-12-1', 12);
-insert into customer values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 24);
- insert into customers values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 22);
+insert into customer values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 23);
+ insert into customers values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 24);
 ```   
 Cmd3
 ``` 
@@ -383,4 +386,21 @@ MariaDB [sam]> select * from book order by book_name desc;
 |       6 | Compiler Design            | Ram         |     45000 |
 |      12 | Artifical Intelligence     | Sam         |     30000 |
 +---------+----------------------------+-------------+-----------+
+``` 
+
+
+### 4. ALIAS - used to create a temporary name for a table or column. 
+
+``` 
+select book_id as "id" from book;
++----+
+| id |
++----+
+| 12 |
+|  6 |
+|  2 |
+| 23 |
+| 24 |
++----+
+5 rows in set (0.030 sec)
 ``` 
