@@ -141,7 +141,8 @@ insert into people(first_name, age)
     -> select name, age from employee;
 ``` 
 Insert all the records of employee into people with specified attributes only.
-
+***
+<br/>
 
 
 ### 2. SELECT 
@@ -162,7 +163,14 @@ select distinct first_name from people;
 ```
 Note after 'distinct' keyword at least one attribute is compulsory. 
 
+***
+<br/>
+
 ### 3. UPDATE
+Syntax:
+``` 
+update table_name set attribute=<value> where condition;
+``` 
 ``` 
 employee Table:
 +-----+--------+-------------------+--------+-------------+------+
@@ -199,9 +207,9 @@ delete from employee where name= "Rohan";
 
 
 
+<br/>
 
 # C. Constraints in SQL
-constraint_type: Not 
 Syntax:
 ``` 
 create table table_name(
@@ -214,8 +222,9 @@ create table table_name(
 );
 ``` 
 
+Examples:
+For Book table
 ``` 
-Book table:
 create table book(
     -> book_id int,
     -> book_name varchar(30),
