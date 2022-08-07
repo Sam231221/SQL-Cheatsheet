@@ -235,8 +235,9 @@ create table book(
     -> constraint bcost CHECK (book_cost > 1000));
 ``` 
 
+
+For Customer table:
 ``` 
-Customer table:
 create table customer(
     -> customer_id int,
     -> customer_name varchar(30),
@@ -248,16 +249,138 @@ create table customer(
     -> constraint bid foreign key (bid) references book(book_id));
 ```     
 
-```  
 Cmd1
+```  
 insert into book values (12, 'Artifical Intelligence', 'Sam', 30000),(23, 'Database Management System','Ram', 15000),(24, 'Theory of Computation', 'Sam', 2000);
-
+```  
 Cmd2
+```  
 insert into customer values(1,'Shyam', 'shyam111@gmail.com', '2022-12-1', 12);
 insert into customer values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 24);
  insert into customers values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 22);
- 
+```   
 Cmd3
+``` 
  insert into customers values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 22);
 ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`sam`.`customers`, CONSTRAINT `bid` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`))
 ```  
+
+
+## Clauses
+
+### 1. BETWEEN  -It must be used with where clause for providing range of values
+
+Syntax of Between operator:
+``` 
+select columns
+from table_name
+where column_name between value1 and value2;
+``` 
+Note: It returns results hvaing attribute starting with value1 and ending with value2
+
+Syntax of Not Between operator:
+``` 
+select columns
+from table_name
+where column_name not between value1 and value2;
+``` 
+
+Examples
+Consider a book table:
+``` 
++---------+----------------------------+-------------+-----------+
+| book_id | book_name                  | author_name | book_cost |
++---------+----------------------------+-------------+-----------+
+|       2 | Computer Networks          | Sam         |     35000 |
+|       6 | Compiler Design            | Ram         |     45000 |
+|      12 | Artifical Intelligence     | Sam         |     30000 |
+|      23 | Database Management System | Ram         |     15000 |
+|      24 | Theory of Computation      | Sam         |      2000 |
++---------+----------------------------+-------------+-----------+
+``` 
+
+Run the query
+```   
+select * from book where book_id between 12 and 23;
+``` 
+It returns
+``` 
++---------+----------------------------+-------------+-----------+
+| book_id | book_name                  | author_name | book_cost |
++---------+----------------------------+-------------+-----------+
+|      12 | Artifical Intelligence     | Sam         |     30000 |
+|      23 | Database Management System | Ram         |     15000 |
++---------+----------------------------+-------------+-----------+
+2 rows in set (0.077 sec)
+``` 
+
+### 2. BETWEEN -It must be used with where clause
+It checks a value within a set of values separated by commas and retrieve from the table that gets matched.
+
+Example
+
+Ex1:
+```   
+select * from book where book_id in (1,2,3);
+``` 
+It returns 
+``` 
++---------+-------------------+-------------+-----------+
+| book_id | book_name         | author_name | book_cost |
++---------+-------------------+-------------+-----------+
+|       2 | Computer Networks | Sam         |     35000 |
++---------+-------------------+-------------+-----------+
+``` 
+    
+Ex2:    
+``` 
+select * from book where book_id not in (1,2,3);
+```   
+It returns 
+``` 
++---------+----------------------------+-------------+-----------+
+| book_id | book_name                  | author_name | book_cost |
++---------+----------------------------+-------------+-----------+
+|       6 | Compiler Design            | Ram         |     45000 |
+|      12 | Artifical Intelligence     | Sam         |     30000 |
+|      23 | Database Management System | Ram         |     15000 |
+|      24 | Theory of Computation      | Sam         |      2000 |
++---------+----------------------------+-------------+-----------+
+4 rows in set (0.001 sec)
+``` 
+
+
+### 3. ORDER BY 
+It returns results in either ascending or descending order.
+Syntax:
+``` 
+select attribute1, attribute2 from table_name ORDER BY column1 [DESC | ASC]
+``` 
+
+``` 
+MariaDB [sam]> select * from book order by book_id desc;
++---------+----------------------------+-------------+-----------+
+| book_id | book_name                  | author_name | book_cost |
++---------+----------------------------+-------------+-----------+
+|      24 | Theory of Computation      | Sam         |      2000 |
+|      23 | Database Management System | Ram         |     15000 |
+|      12 | Artifical Intelligence     | Sam         |     30000 |
+|       6 | Compiler Design            | Ram         |     45000 |
+|       2 | Computer Networks          | Sam         |     35000 |
++---------+----------------------------+-------------+-----------+
+5 rows in set (0.028 sec)
+``` 
+
+
+``` 
+MariaDB [sam]> select * from book order by book_name desc;
++---------+----------------------------+-------------+-----------+
+| book_id | book_name                  | author_name | book_cost |
++---------+----------------------------+-------------+-----------+
+|      24 | Theory of Computation      | Sam         |      2000 |
+|      23 | Database Management System | Ram         |     15000 |
+|       2 | Computer Networks          | Sam         |     35000 |
+|       6 | Compiler Design            | Ram         |     45000 |
+|      12 | Artifical Intelligence     | Sam         |     30000 |
++---------+----------------------------+-------------+-----------+
+``` 
