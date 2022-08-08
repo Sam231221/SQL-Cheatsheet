@@ -262,14 +262,12 @@ insert into customer values(1,'Shyam', 'shyam111@gmail.com', '2022-12-1', 12);
 insert into customer values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 23);
  insert into customers values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 24);
 ```   
-Cmd3
-``` 
- insert into customers values(5,'Hari', 'hari22@gmail.com', '2021-01-21', 22);
-ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`sam`.`customers`, CONSTRAINT `bid` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`))
-```  
+
+<br/>
 
 
 ## Clauses
+***
 
 ### 1. BETWEEN  -It must be used with where clause for providing range of values
 
@@ -435,8 +433,12 @@ Employee
 |   5 | Bishal | Businessman       | 400000 |           4 | NULL |      16 |
 |  12 | Sam    | Software Engineer | 700000 |          12 |   22 |      26 |
 +-----+--------+-------------------+--------+-------------+------+---------+
-``` 
+```
+
+<br/>
+
 ### a. INNER JOIN
+***
 returns all rows from both participating tables where key of one table = key of another table
 
 
@@ -534,6 +536,166 @@ select e.name, d.name from employee e right join department d on e.dept_id=d.dep
 +--------+------+
 ``` 
 
+<br/>
+
 ### c. NATURAL JOIN
-   there should be exact one column same between 2 relations with same data_type.
-   The values have to be also matching.
+***
+   It is a type of natural join that doesn't uses any comparison operator i.e where clause.
+   There should be exact one column same between 2 relations with same data_type.
+   Only those records whose common attribute's values are matching are returned.
+
+Employee table
+``` 
++-----+---------+-----------+-----------------------+------------+
+| eid | name    | dept_name | company_name          | location   |
++-----+---------+-----------+-----------------------+------------+
+|   1 | Manoj   | IT        | techTFQ               | Pokhara    |
+|   2 | Riya    | IOM       | Om Hospital           | Butwal     |
+|   3 | Rahul   | IT        | techFQ                | Pokhara    |
+|   5 | Michaek | IOST      | techTFQ               | Pokhara    |
+|  11 | Sameer  | IOE       | Dimensional Illusions | Kathamandu |
++-----+---------+-----------+-----------------------+------------+   
+``` 
+
+Department table 
+``` 
++-----+-----------+
+| did | dept_name |
++-----+-----------+
+|   2 | IT        |
+|   4 | IOST      |
+|   7 | BBS       |
+|   9 | BBA       |
++-----+-----------+
+``` 
+Run the Query
+``` 
+select * from employee natural join department;
+``` 
+Output:
+``` 
++-----------+-----+---------+--------------+----------+-----+
+| dept_name | eid | name    | company_name | location | did |
++-----------+-----+---------+--------------+----------+-----+
+| IT        |   1 | Manoj   | techTFQ      | Pokhara  |   2 |
+| IT        |   3 | Rahul   | techFQ       | Pokhara  |   2 |
+| IOST      |   5 | Michaek | techTFQ      | Pokhara  |   4 |
++-----------+-----+---------+--------------+----------+-----+
+``` 
+
+<br/>
+
+### d. SELF JOIN
+***
+   In this type of join, a table is join with itself which may uses both On clause and where clause.
+   It combines each row of a table with other row of same table.
+``` 
+Query:
+ create table family(
+     member_id int,
+     name varchar(20),
+     age int,
+   
+   
+select * from family;   
++-----------+----------+------+-----------+
+| member_id | name     | age  | parent_id |
++-----------+----------+------+-----------+
+|         1 | Sameera  |   22 |         5 |
+|         2 | Caroline |    9 |         5 |
+|         3 | John     |   23 |         5 |
+|         4 | Melina   |   34 |         6 |
+|         5 | Mary     |   45 |         6 |
++-----------+----------+------+-----------+
+``` 
+
+Run the Query:
+``` 
+select *
+from family as child
+join family as parent on child.parent_id =parent.member_id;
+``` 
+
+Output:
+``` 
++-----------+----------+------+-----------+-----------+------+------+-----------+
+| member_id | name     | age  | parent_id | member_id | name | age  | parent_id |
++-----------+----------+------+-----------+-----------+------+------+-----------+
+|         1 | Sameera  |   22 |         5 |         5 | Mary |   45 |         6 |
+|         2 | Caroline |    9 |         5 |         5 | Mary |   45 |         6 |
+|         3 | John     |   23 |         5 |         5 | Mary |   45 |         6 |
++-----------+----------+------+-----------+-----------+------+------+-----------+   
+``` 
+
+Second Query
+``` 
+select child.name as child_name,
+child.age as child_age,
+parent.name as parent_name,
+parent.age as parent_age
+from family as child
+join family as parent on child.parent_id =parent.member_id;
+```
+
+Output:
+```
++------------+-----------+-------------+------------+
+| child_name | child_age | parent_name | parent_age |
++------------+-----------+-------------+------------+
+| Sameera    |        22 | Mary        |         45 |
+| Caroline   |         9 | Mary        |         45 |
+| John       |        23 | Mary        |         45 |
++------------+-----------+-------------+------------+
+``` 
+
+<br/>
+
+### e. CROSS JOIN (CARTESIAN PRODUCTS)
+***
+If there are x rows in first table and y rows in second table then the result of cross join will x X y. So Cross join returns the cartesian product of first table and second table respectively.
+
+Run the Query.
+``` 
+select * from employee cross join department;
+``` 
+Output:
+``` 
++-----+---------+-----------+-----------------------+------------+-----+-----------+
+| eid | name    | dept_name | company_name          | location   | did | dept_name |
++-----+---------+-----------+-----------------------+------------+-----+-----------+
+|   1 | Manoj   | IT        | techTFQ               | Pokhara    |   2 | IT        |
+|   1 | Manoj   | IT        | techTFQ               | Pokhara    |   4 | IOST      |
+|   1 | Manoj   | IT        | techTFQ               | Pokhara    |   7 | BBS       |
+|   1 | Manoj   | IT        | techTFQ               | Pokhara    |   9 | BBA       |
+|   2 | Riya    | IOM       | Om Hospital           | Butwal     |   2 | IT        |
+|   2 | Riya    | IOM       | Om Hospital           | Butwal     |   4 | IOST      |
+|   2 | Riya    | IOM       | Om Hospital           | Butwal     |   7 | BBS       |
+|   2 | Riya    | IOM       | Om Hospital           | Butwal     |   9 | BBA       |
+|   3 | Rahul   | IT        | techFQ                | Pokhara    |   2 | IT        |
+|   3 | Rahul   | IT        | techFQ                | Pokhara    |   4 | IOST      |
+|   3 | Rahul   | IT        | techFQ                | Pokhara    |   7 | BBS       |
+|   3 | Rahul   | IT        | techFQ                | Pokhara    |   9 | BBA       |
+|   5 | Michaek | IOST      | techTFQ               | Pokhara    |   2 | IT        |
+|   5 | Michaek | IOST      | techTFQ               | Pokhara    |   4 | IOST      |
+|   5 | Michaek | IOST      | techTFQ               | Pokhara    |   7 | BBS       |
+|   5 | Michaek | IOST      | techTFQ               | Pokhara    |   9 | BBA       |
+|  11 | Sameer  | IOE       | Dimensional Illusions | Kathamandu |   2 | IT        |
+|  11 | Sameer  | IOE       | Dimensional Illusions | Kathamandu |   4 | IOST      |
+|  11 | Sameer  | IOE       | Dimensional Illusions | Kathamandu |   7 | BBS       |
+|  11 | Sameer  | IOE       | Dimensional Illusions | Kathamandu |   9 | BBA       |
++-----+---------+-----------+-----------------------+------------+-----+-----------+
+```
+
+Second query
+```
+select * from employee cross join department where employee.eid = department.did ;
+```
+Output:
+```
++-----+------+-----------+--------------+----------+-----+-----------+
+| eid | name | dept_name | company_name | location | did | dept_name |
++-----+------+-----------+--------------+----------+-----+-----------+
+|   2 | Riya | IOM       | Om Hospital  | Butwal   |   2 | IT        |
++-----+------+-----------+--------------+----------+-----+-----------+
+1 row in set (0.001 sec)
+```
